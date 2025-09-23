@@ -87,6 +87,7 @@ class ZomodoroTimer {
         
         // Task elements
         this.addTaskBtn = document.getElementById('addTaskBtn');
+        this.clearAllTasksBtn = document.getElementById('clearAllTasksBtn');
         this.taskInput = document.getElementById('taskInput');
         this.taskPomodoros = document.getElementById('taskPomodoros');
         this.taskInputContainer = document.getElementById('taskInputContainer');
@@ -105,6 +106,13 @@ class ZomodoroTimer {
         this.closeSoundsBtn = document.getElementById('closeSoundsBtn');
         this.saveSettingsBtn = document.getElementById('saveSettingsBtn');
         this.resetSettingsBtn = document.getElementById('resetSettingsBtn');
+        
+        // Confirmation modal elements
+        this.confirmationModal = document.getElementById('confirmationModal');
+        this.confirmationTitle = document.getElementById('confirmationTitle');
+        this.confirmationMessage = document.getElementById('confirmationMessage');
+        this.confirmationCancel = document.getElementById('confirmationCancel');
+        this.confirmationConfirm = document.getElementById('confirmationConfirm');
         
         // Settings inputs
         this.focusDurationInput = document.getElementById('focusDuration');
@@ -188,6 +196,7 @@ class ZomodoroTimer {
         
         // Task management
         this.addTaskBtn.addEventListener('click', () => this.showTaskInput());
+        this.clearAllTasksBtn.addEventListener('click', () => this.clearAllTasks());
         this.saveTaskBtn.addEventListener('click', () => this.saveTask());
         this.cancelTaskBtn.addEventListener('click', () => this.hideTaskInput());
         this.taskInput.addEventListener('keypress', (e) => {
@@ -212,6 +221,14 @@ class ZomodoroTimer {
         
         // Notification close
         this.notificationClose.addEventListener('click', () => this.hideNotification());
+        
+        // Confirmation modal
+        this.confirmationCancel.addEventListener('click', () => this.hideConfirmation());
+        this.confirmationModal.addEventListener('click', (e) => {
+            if (e.target === this.confirmationModal) {
+                this.hideConfirmation();
+            }
+        });
         
         // Close modals on outside click
         [this.settingsModal, this.statsModal, this.themeModal, this.soundsModal].forEach(modal => {
@@ -479,6 +496,25 @@ class ZomodoroTimer {
         this.saveData();
     }
 
+    clearAllTasks() {
+        if (this.tasks.length === 0) {
+            this.showNotification('No Tasks', 'There are no tasks to clear.');
+            return;
+        }
+
+        const taskCount = this.tasks.length;
+        this.showConfirmation(
+            'Clear All Tasks',
+            `Are you sure you want to clear all ${taskCount} task${taskCount === 1 ? '' : 's'}?\n\nThis action cannot be undone.`,
+            () => {
+                this.tasks = [];
+                this.renderTasks();
+                this.saveData();
+                this.showNotification('Tasks Cleared', `Successfully cleared ${taskCount} task${taskCount === 1 ? '' : 's'}.`);
+            }
+        );
+    }
+
     toggleTask(taskId) {
         const task = this.tasks.find(t => t.id === taskId);
         if (task) {
@@ -503,6 +539,9 @@ class ZomodoroTimer {
 
     renderTasks() {
         this.tasksList.innerHTML = '';
+        
+        // Update clear all button state
+        this.clearAllTasksBtn.disabled = this.tasks.length === 0;
         
         if (this.tasks.length === 0) {
             this.tasksList.innerHTML = `
@@ -927,6 +966,28 @@ class ZomodoroTimer {
 
     hideNotification() {
         this.notification.classList.remove('show');
+    }
+
+    // Custom Confirmation Modal
+    showConfirmation(title, message, onConfirm) {
+        this.confirmationTitle.textContent = title;
+        this.confirmationMessage.textContent = message;
+        this.confirmationModal.classList.add('show');
+        
+        // Remove any existing event listeners
+        const newConfirmBtn = this.confirmationConfirm.cloneNode(true);
+        this.confirmationConfirm.parentNode.replaceChild(newConfirmBtn, this.confirmationConfirm);
+        this.confirmationConfirm = newConfirmBtn;
+        
+        // Add new event listener
+        this.confirmationConfirm.addEventListener('click', () => {
+            this.hideConfirmation();
+            if (onConfirm) onConfirm();
+        });
+    }
+
+    hideConfirmation() {
+        this.confirmationModal.classList.remove('show');
     }
 
     playSound(type) {

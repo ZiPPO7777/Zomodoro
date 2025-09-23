@@ -145,17 +145,36 @@
         <section class="tasks-section">
           <div class="tasks-header">
             <h2>Tasks</h2>
-            <button class="add-task-btn" id="addTaskBtn">
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="currentColor"
+            <div class="tasks-header-buttons">
+              <button
+                class="clear-all-btn"
+                id="clearAllTasksBtn"
+                title="Clear all tasks"
               >
-                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
-              </svg>
-              Add Task
-            </button>
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path
+                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                  />
+                </svg>
+                Clear All
+              </button>
+              <button class="add-task-btn" id="addTaskBtn">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+                </svg>
+                Add Task
+              </button>
+            </div>
           </div>
 
           <div
@@ -603,6 +622,25 @@
                 <span id="masterVolumeValue">70%</span>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Confirmation Modal -->
+      <div class="confirmation-modal" id="confirmationModal">
+        <div class="confirmation-content">
+          <div class="confirmation-header">
+            <div class="confirmation-icon">⚠️</div>
+            <h3 id="confirmationTitle">Confirm Action</h3>
+          </div>
+          <div class="confirmation-body">
+            <p id="confirmationMessage">Are you sure you want to proceed?</p>
+          </div>
+          <div class="confirmation-actions">
+            <button class="btn secondary" id="confirmationCancel">
+              Cancel
+            </button>
+            <button class="btn danger" id="confirmationConfirm">Confirm</button>
           </div>
         </div>
       </div>
