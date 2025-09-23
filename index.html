@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Zomodoro - Pomodoro Timer</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff6b6b'%3E%3Ccircle cx='12' cy='12' r='10'/%3E%3Cpath fill='white' d='M12 6v6l4 2'/%3E%3C/svg%3E"
+    />
+  </head>
+  <body>
+    <div class="app">
+      <!-- Header -->
+      <header class="header">
+        <div class="header-content">
+          <h1 class="logo">
+            <span class="logo-icon">🍅</span>
+            Zomodoro
+          </h1>
+          <div class="header-controls">
+            <button class="icon-btn" id="soundsBtn" title="Focus Sounds">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path
+                  d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"
+                />
+              </svg>
+            </button>
+            <button class="icon-btn" id="settingsBtn" title="Settings">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path
+                  d="M12 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm8-1h-2.35c-.18-.54-.44-1.04-.78-1.49l1.66-1.66c.39-.39.39-1.02 0-1.41l-1.41-1.41c-.39-.39-1.02-.39-1.41 0l-1.66 1.66c-.45-.34-.95-.6-1.49-.78V2c0-.55-.45-1-1-1h-2c-.55 0-1 .45-1 1v2.35c-.54.18-1.04.44-1.49.78L5.41 3.47c-.39-.39-1.02-.39-1.41 0L2.59 4.88c-.39.39-.39 1.02 0 1.41l1.66 1.66c-.34.45-.6.95-.78 1.49H1c-.55 0-1 .45-1 1v2c0 .55.45 1 1 1h2.35c.18.54.44 1.04.78 1.49l-1.66 1.66c-.39.39-.39 1.02 0 1.41l1.41 1.41c.39.39 1.02.39 1.41 0l1.66-1.66c.34-.45.6-.95.78-1.49H23c.55 0 1-.45 1-1v-2c0-.55-.45-1-1-1z"
+                />
+              </svg>
+            </button>
+            <button class="icon-btn" id="statsBtn" title="Statistics">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path
+                  d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-5h3v5zm4 0h-3v-7h3v7zm0-9h-3V6h3v2z"
+                />
+              </svg>
+            </button>
+            <button class="icon-btn" id="themeBtn" title="Change Theme">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="theme-icon"
+              >
+                <path
+                  d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8z"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Content -->
+      <main class="main">
+        <!-- Timer Section -->
+        <section class="timer-section">
+          <div class="timer-container">
+            <div class="timer-circle">
+              <svg
+                class="progress-ring"
+                width="240"
+                height="240"
+                viewBox="0 0 240 240"
+              >
+                <circle
+                  class="progress-ring-background"
+                  cx="120"
+                  cy="120"
+                  r="110"
+                />
+                <circle
+                  class="progress-ring-progress"
+                  cx="120"
+                  cy="120"
+                  r="110"
+                />
+              </svg>
+              <div class="timer-content">
+                <div class="timer-label" id="timerLabel">Focus Time</div>
+                <div class="timer-display" id="timerDisplay">25:00</div>
+                <div class="session-info">
+                  <span id="sessionCount">Session 1 of 4</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="timer-controls">
+              <button class="control-btn primary" id="startBtn">
+                <span class="btn-text">Start</span>
+              </button>
+              <button class="control-btn secondary" id="pauseBtn" disabled>
+                <span class="btn-text">Pause</span>
+              </button>
+              <button class="control-btn secondary" id="resetBtn">
+                <span class="btn-text">Reset</span>
+              </button>
+            </div>
+
+            <div class="timer-mode-selector">
+              <button class="mode-btn active" data-mode="focus">Focus</button>
+              <button class="mode-btn" data-mode="short-break">
+                Short Break
+              </button>
+              <button class="mode-btn" data-mode="long-break">
+                Long Break
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Tasks Section -->
+        <section class="tasks-section">
+          <div class="tasks-header">
+            <h2>Tasks</h2>
+            <button class="add-task-btn" id="addTaskBtn">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" />
+              </svg>
+              Add Task
+            </button>
+          </div>
+
+          <div
+            class="task-input-container"
+            id="taskInputContainer"
+            style="display: none"
+          >
+            <input
+              type="text"
+              id="taskInput"
+              placeholder="Enter task name..."
+              maxlength="100"
+            />
+            <input
+              type="number"
+              id="taskPomodoros"
+              placeholder="Pomodoros"
+              min="1"
+              max="20"
+              value="1"
+            />
+            <div class="task-input-actions">
+              <button class="btn-small primary" id="saveTaskBtn">Save</button>
+              <button class="btn-small secondary" id="cancelTaskBtn">
+                Cancel
+              </button>
+            </div>
+          </div>
+
+          <div class="tasks-list" id="tasksList">
+            <!-- Tasks will be dynamically added here -->
+          </div>
+        </section>
+      </main>
+
+      <!-- Theme Selector Modal -->
+      <div class="modal" id="themeModal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>Choose Theme</h3>
+            <button class="close-btn" id="closeThemeBtn">&times;</button>
+          </div>
+          <div class="modal-body">
+            <div class="theme-grid">
+              <div class="theme-option" data-theme="light">
+                <div class="theme-preview light-preview"></div>
+                <span class="theme-name">☀️ Light</span>
+              </div>
+              <div class="theme-option" data-theme="dark">
+                <div class="theme-preview dark-preview"></div>
+                <span class="theme-name">🌙 Dark</span>
+              </div>
+              <div class="theme-option" data-theme="ocean">
+                <div class="theme-preview ocean-preview"></div>
+                <span class="theme-name">🌊 Ocean</span>
+              </div>
+              <div class="theme-option" data-theme="forest">
+                <div class="theme-preview forest-preview"></div>
+                <span class="theme-name">🌲 Forest</span>
+              </div>
+              <div class="theme-option" data-theme="sunset">
+                <div class="theme-preview sunset-preview"></div>
+                <span class="theme-name">🌅 Sunset</span>
+              </div>
+              <div class="theme-option" data-theme="space">
+                <div class="theme-preview space-preview"></div>
+                <span class="theme-name">🚀 Space</span>
+              </div>
+              <div class="theme-option" data-theme="cherry">
+                <div class="theme-preview cherry-preview"></div>
+                <span class="theme-name">🌸 Cherry</span>
+              </div>
+              <div class="theme-option" data-theme="lavender">
+                <div class="theme-preview lavender-preview"></div>
+                <span class="theme-name">💜 Lavender</span>
+              </div>
+              <div class="theme-option" data-theme="arctic">
+                <div class="theme-preview arctic-preview"></div>
+                <span class="theme-name">❄️ Arctic</span>
+              </div>
+              <div class="theme-option" data-theme="autumn">
+                <div class="theme-preview autumn-preview"></div>
+                <span class="theme-name">🍂 Autumn</span>
+              </div>
+              <div class="theme-option" data-theme="midnight">
+                <div class="theme-preview midnight-preview"></div>
+                <span class="theme-name">🌌 Midnight</span>
+              </div>
+              <div class="theme-option" data-theme="neon">
+                <div class="theme-preview neon-preview"></div>
+                <span class="theme-name">⚡ Neon</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Settings Modal -->
+      <div class="modal" id="settingsModal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>Settings</h3>
+            <button class="close-btn" id="closeSettingsBtn">&times;</button>
+          </div>
+          <div class="modal-body">
+            <div class="setting-group">
+              <label for="focusDuration">Focus Duration (minutes)</label>
+              <input
+                type="number"
+                id="focusDuration"
+                min="1"
+                max="60"
+                value="25"
+              />
+            </div>
+            <div class="setting-group">
+              <label for="shortBreakDuration"
+                >Short Break Duration (minutes)</label
+              >
+              <input
+                type="number"
+                id="shortBreakDuration"
+                min="1"
+                max="30"
+                value="5"
+              />
+            </div>
+            <div class="setting-group">
+              <label for="longBreakDuration"
+                >Long Break Duration (minutes)</label
+              >
+              <input
+                type="number"
+                id="longBreakDuration"
+                min="1"
+                max="60"
+                value="15"
+              />
+            </div>
+            <div class="setting-group">
+              <label for="longBreakInterval">Long Break After (sessions)</label>
+              <input
+                type="number"
+                id="longBreakInterval"
+                min="2"
+                max="10"
+                value="4"
+              />
+            </div>
+            <div class="setting-group">
+              <label class="checkbox-label">
+                <input type="checkbox" id="autoStartBreaks" />
+                <span class="checkmark"></span>
+                Auto-start breaks
+              </label>
+            </div>
+            <div class="setting-group">
+              <label class="checkbox-label">
+                <input type="checkbox" id="autoStartPomodoros" />
+                <span class="checkmark"></span>
+                Auto-start pomodoros
+              </label>
+            </div>
+            <div class="setting-group">
+              <label class="checkbox-label">
+                <input type="checkbox" id="soundEnabled" checked />
+                <span class="checkmark"></span>
+                Sound notifications
+              </label>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn secondary" id="resetSettingsBtn">
+              Reset to Default
+            </button>
+            <button class="btn primary" id="saveSettingsBtn">
+              Save Settings
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Statistics Modal -->
+      <div class="modal" id="statsModal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>Statistics</h3>
+            <button class="close-btn" id="closeStatsBtn">&times;</button>
+          </div>
+          <div class="modal-body">
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-number" id="todayPomodoros">0</div>
+                <div class="stat-label">Today</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-number" id="weekPomodoros">0</div>
+                <div class="stat-label">This Week</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-number" id="totalPomodoros">0</div>
+                <div class="stat-label">Total</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-number" id="currentStreak">0</div>
+                <div class="stat-label">Current Streak</div>
+              </div>
+            </div>
+
+            <div class="achievements-section">
+              <h4>Achievements</h4>
+              <div class="achievements-grid" id="achievementsGrid">
+                <!-- Achievements will be dynamically added -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Focus Sounds Modal -->
+      <div class="modal" id="soundsModal">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>🎵 Focus Sounds</h3>
+            <button class="close-btn" id="closeSoundsBtn">&times;</button>
+          </div>
+          <div class="modal-body">
+            <div class="sounds-section">
+              <h4>Cozy & Chill</h4>
+              <div class="sounds-grid">
+                <div class="sound-option" data-sound="happy-panda">
+                  <div class="sound-icon">🐼</div>
+                  <span class="sound-name">Happy Panda</span>
+                  <div class="sound-controls">
+                    <button class="sound-btn play" data-action="play">
+                      ▶️
+                    </button>
+                    <input
+                      type="range"
+                      class="volume-slider"
+                      min="0"
+                      max="100"
+                      value="50"
+                    />
+                  </div>
+                </div>
+                <div class="sound-option" data-sound="sleepy-bunny">
+                  <div class="sound-icon">🐰</div>
+                  <span class="sound-name">Sleepy Bunny</span>
+                  <div class="sound-controls">
+                    <button class="sound-btn play" data-action="play">
+                      ▶️
+                    </button>
+                    <input
+                      type="range"
+                      class="volume-slider"
+                      min="0"
+                      max="100"
+                      value="50"
+                    />
+                  </div>
+                </div>
+                <div class="sound-option" data-sound="lemon-drop">
+                  <div class="sound-icon">🍋</div>
+                  <span class="sound-name">Lemon Drop</span>
+                  <div class="sound-controls">
+                    <button class="sound-btn play" data-action="play">
+                      ▶️
+                    </button>
+                    <input
+                      type="range"
+                      class="volume-slider"
+                      min="0"
+                      max="100"
+                      value="50"
+                    />
+                  </div>
+                </div>
+                <div class="sound-option" data-sound="dreamy-fox">
+                  <div class="sound-icon">🦊</div>
+                  <span class="sound-name">Dreamy Fox</span>
+                  <div class="sound-controls">
+                    <button class="sound-btn play" data-action="play">
+                      ▶️
+                    </button>
+                    <input
+                      type="range"
+                      class="volume-slider"
+                      min="0"
+                      max="100"
+                      value="50"
+                    />
+                  </div>
+                </div>
+                <div class="sound-option" data-sound="fluffy-blanket">
+                  <div class="sound-icon">🛏️</div>
+                  <span class="sound-name">Fluffy Blanket</span>
+                  <div class="sound-controls">
+                    <button class="sound-btn play" data-action="play">
+                      ▶️
+                    </button>
+                    <input
+                      type="range"
+                      class="volume-slider"
+                      min="0"
+                      max="100"
+                      value="50"
+                    />
+                  </div>
+                </div>
+                <div class="sound-option" data-sound="cinnamon-toast">
+                  <div class="sound-icon">🍞</div>
+                  <span class="sound-name">Cinnamon Toast</span>
+                  <div class="sound-controls">
+                    <button class="sound-btn play" data-action="play">
+                      ▶️
+                    </button>
+                    <input
+                      type="range"
+                      class="volume-slider"
+                      min="0"
+                      max="100"
+                      value="50"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="sounds-section">
+              <h4>Playful & Energetic</h4>
+              <div class="sounds-grid">
+                <div class="sound-option" data-sound="bouncy-squirrel">
+                  <div class="sound-icon">🐿️</div>
+                  <span class="sound-name">Bouncy Squirrel</span>
+                  <div class="sound-controls">
+                    <button class="sound-btn play" data-action="play">
+                      ▶️
+                    </button>
+                    <input
+                      type="range"
+                      class="volume-slider"
+                      min="0"
+                      max="100"
+                      value="50"
+                    />
+                  </div>
+                </div>
+                <div class="sound-option" data-sound="jellybean-jump">
+                  <div class="sound-icon">🍬</div>
+                  <span class="sound-name">Jellybean Jump</span>
+                  <div class="sound-controls">
+                    <button class="sound-btn play" data-action="play">
+                      ▶️
+                    </button>
+                    <input
+                      type="range"
+                      class="volume-slider"
+                      min="0"
+                      max="100"
+                      value="50"
+                    />
+                  </div>
+                </div>
+                <div class="sound-option" data-sound="sprinkles-dance">
+                  <div class="sound-icon">🎉</div>
+                  <span class="sound-name">Sprinkles Dance</span>
+                  <div class="sound-controls">
+                    <button class="sound-btn play" data-action="play">
+                      ▶️
+                    </button>
+                    <input
+                      type="range"
+                      class="volume-slider"
+                      min="0"
+                      max="100"
+                      value="50"
+                    />
+                  </div>
+                </div>
+                <div class="sound-option" data-sound="giggle-goose">
+                  <div class="sound-icon">🦢</div>
+                  <span class="sound-name">Giggle Goose</span>
+                  <div class="sound-controls">
+                    <button class="sound-btn play" data-action="play">
+                      ▶️
+                    </button>
+                    <input
+                      type="range"
+                      class="volume-slider"
+                      min="0"
+                      max="100"
+                      value="50"
+                    />
+                  </div>
+                </div>
+                <div class="sound-option" data-sound="rainbow-hamster">
+                  <div class="sound-icon">🌈</div>
+                  <span class="sound-name">Rainbow Hamster</span>
+                  <div class="sound-controls">
+                    <button class="sound-btn play" data-action="play">
+                      ▶️
+                    </button>
+                    <input
+                      type="range"
+                      class="volume-slider"
+                      min="0"
+                      max="100"
+                      value="50"
+                    />
+                  </div>
+                </div>
+                <div class="sound-option" data-sound="cherry-pop">
+                  <div class="sound-icon">🍒</div>
+                  <span class="sound-name">Cherry Pop</span>
+                  <div class="sound-controls">
+                    <button class="sound-btn play" data-action="play">
+                      ▶️
+                    </button>
+                    <input
+                      type="range"
+                      class="volume-slider"
+                      min="0"
+                      max="100"
+                      value="50"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="master-controls">
+              <button class="btn secondary" id="stopAllSounds">
+                🔇 Stop All
+              </button>
+              <div class="master-volume">
+                <span>Master Volume:</span>
+                <input
+                  type="range"
+                  id="masterVolume"
+                  min="0"
+                  max="100"
+                  value="70"
+                />
+                <span id="masterVolumeValue">70%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Notification Display -->
+      <div class="notification" id="notification">
+        <div class="notification-content">
+          <div class="notification-title" id="notificationTitle"></div>
+          <div class="notification-message" id="notificationMessage"></div>
+        </div>
+        <button class="notification-close" id="notificationClose">
+          &times;
+        </button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
