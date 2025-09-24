@@ -1972,6 +1972,378 @@ body {
     min-height: calc(100vh - 64px);
 }
 
+/* Section Navigation */
+.section-nav {
+    display: flex;
+    background: var(--surface-color);
+    border-radius: var(--border-radius-large);
+    padding: 6px;
+    margin-bottom: 24px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-light);
+}
+
+.nav-btn {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 16px;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.nav-btn.active {
+    background: var(--primary-color);
+    color: white;
+    box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+}
+
+.nav-btn:not(.active):hover {
+    background: var(--border-color);
+    color: var(--text-primary);
+}
+
+.nav-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* Section Containers */
+.clock-section,
+.pomodoro-section {
+    display: none;
+    flex: 1;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.clock-section.active,
+.pomodoro-section.active {
+    display: flex;
+    flex-direction: column;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Clock Section Styles */
+.clock-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.2rem;
+    padding: 0.75rem 0;
+    flex: 1;
+}
+
+.digital-clock {
+    text-align: center;
+    background: var(--card-color);
+    border-radius: var(--border-radius-large);
+    padding: 2.5rem;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-medium);
+    width: 100%;
+    max-width: 500px;
+}
+
+.time-display {
+    font-size: 4rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    margin-bottom: 0.75rem;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    filter: drop-shadow(0 3px 6px rgba(255, 107, 107, 0.3));
+    text-shadow: 0 0 20px rgba(255, 107, 107, 0.2);
+}
+
+.date-display {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.timezone-display {
+    font-size: 1rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+.analog-clock {
+    width: 320px;
+    height: 320px;
+    position: relative;
+    margin: 1rem 0;
+}
+
+.clock-face {
+    width: 100%;
+    height: 100%;
+    border: 10px solid var(--border-color);
+    border-radius: 50%;
+    background: var(--card-color);
+    position: relative;
+    box-shadow: var(--shadow-heavy);
+}
+
+.hour-markers {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+}
+
+.marker {
+    position: absolute;
+    width: 3px;
+    height: 25px;
+    background: var(--text-muted);
+    top: 8px;
+    left: 50%;
+    transform-origin: 50% 132px;
+    margin-left: -1.5px;
+}
+
+.marker:nth-child(3n) {
+    height: 35px;
+    width: 4px;
+    background: var(--text-primary);
+    margin-left: -2px;
+}
+
+.marker span {
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%) rotate(calc(var(--rotation) * -1));
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    text-align: center;
+    width: 24px;
+}
+
+.marker:nth-child(1) span { --rotation: 0deg; }
+.marker:nth-child(2) span { --rotation: 30deg; }
+.marker:nth-child(3) span { --rotation: 60deg; }
+.marker:nth-child(4) span { --rotation: 90deg; }
+.marker:nth-child(5) span { --rotation: 120deg; }
+.marker:nth-child(6) span { --rotation: 150deg; }
+.marker:nth-child(7) span { --rotation: 180deg; }
+.marker:nth-child(8) span { --rotation: 210deg; }
+.marker:nth-child(9) span { --rotation: 240deg; }
+.marker:nth-child(10) span { --rotation: 270deg; }
+.marker:nth-child(11) span { --rotation: 300deg; }
+.marker:nth-child(12) span { --rotation: 330deg; }
+
+.clock-hands {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.hand {
+    position: absolute;
+    transform-origin: bottom center;
+    border-radius: 3px;
+    transition: transform 0.1s ease-out;
+}
+
+.hour-hand {
+    width: 8px;
+    height: 70px;
+    background: var(--text-primary);
+    top: -70px;
+    left: -4px;
+    border-radius: 4px;
+}
+
+.minute-hand {
+    width: 5px;
+    height: 95px;
+    background: var(--primary-color);
+    top: -95px;
+    left: -2.5px;
+    border-radius: 3px;
+}
+
+.second-hand {
+    width: 2px;
+    height: 110px;
+    background: var(--secondary-color);
+    top: -110px;
+    left: -1px;
+    border-radius: 1px;
+}
+
+.center-dot {
+    width: 16px;
+    height: 16px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    box-shadow: 0 0 0 4px var(--card-color), 0 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+.clock-controls {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+.clock-format-btn {
+    padding: 0.75rem 1.5rem;
+    border: 1px solid var(--border-color);
+    background: var(--surface-color);
+    color: var(--text-primary);
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: var(--transition);
+    min-width: 120px;
+}
+
+.clock-format-btn:hover {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-light);
+}
+
+/* World Clocks */
+.world-clocks {
+    background: var(--card-color);
+    border-radius: var(--border-radius-large);
+    padding: 2rem;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-medium);
+    width: 100%;
+    max-width: 450px;
+}
+
+.world-clocks h3 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.world-clock-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+}
+
+.world-clock-item {
+    text-align: center;
+    padding: 1rem;
+    background: var(--surface-color);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    transition: var(--transition);
+}
+
+.world-clock-item:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-light);
+}
+
+.city-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.city-time {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    font-variant-numeric: tabular-nums;
+}
+
+/* Responsive Design for Clock */
+@media (max-width: 600px) {
+    .clock-container {
+        gap: 1.5rem;
+        padding: 1rem 0;
+    }
+    
+    .time-display {
+        font-size: 2.8rem;
+    }
+    
+    .analog-clock {
+        width: 220px;
+        height: 220px;
+    }
+    
+    .hour-hand {
+        height: 55px;
+        top: -55px;
+    }
+    
+    .minute-hand {
+        height: 75px;
+        top: -75px;
+    }
+    
+    .second-hand {
+        height: 85px;
+        top: -85px;
+    }
+    
+    .marker {
+        transform-origin: 50% 102px;
+    }
+    
+    .marker span {
+        top: 32px;
+        font-size: 1rem;
+    }
+    
+    .clock-controls {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .clock-format-btn {
+        width: 100%;
+        max-width: 200px;
+    }
+    
+    .world-clock-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .digital-clock,
+    .world-clocks {
+        padding: 1.5rem;
+    }
+}
+
 /* Timer Section */
 .timer-section {
     display: flex;
@@ -2473,8 +2845,520 @@ body {
         transform: scale(1);
     }
     50% {
-        opacity: 0.7;
-        transform: scale(0.95);
+        opacity: 0.8;
+        transform: scale(1.05);
+    }
+}
+
+/* Clock Style Button */
+.clock-style-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition);
+    margin-bottom: 1.5rem;
+    width: fit-content;
+}
+
+.clock-style-btn:hover {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-light);
+}
+
+.clock-style-btn svg {
+    flex-shrink: 0;
+    opacity: 0.8;
+}
+
+/* Clock Style Modal */
+.clock-style-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+}
+
+.clock-style-modal-content {
+    background: var(--card-color);
+    border-radius: 16px;
+    box-shadow: var(--shadow-large);
+    border: 1px solid var(--border-color);
+    width: 90%;
+    max-width: 500px;
+    max-height: 80vh;
+    overflow-y: auto;
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.clock-style-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 1.5rem 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.clock-style-header h3 {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 0.25rem;
+    border-radius: 6px;
+    transition: var(--transition);
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close-btn:hover {
+    background: var(--surface-color);
+    color: var(--text-primary);
+}
+
+.clock-style-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    padding: 1.5rem;
+}
+
+.clock-style-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1.5rem;
+    background: var(--surface-color);
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: var(--transition);
+    text-align: center;
+}
+
+.clock-style-option:hover {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-medium);
+}
+
+.clock-style-option.active {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-medium);
+}
+
+.style-icon {
+    font-size: 2rem;
+    opacity: 0.9;
+}
+
+.style-name {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.style-desc {
+    font-size: 0.85rem;
+    opacity: 0.8;
+    margin: 0;
+}
+
+/* Responsive Modal */
+@media (max-width: 600px) {
+    .clock-style-modal-content {
+        width: 95%;
+        margin: 1rem;
+    }
+    
+    .clock-style-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+        padding: 1rem;
+    }
+    
+    .clock-style-option {
+        padding: 1rem;
+    }
+    
+    .style-icon {
+        font-size: 1.5rem;
+    }
+}
+
+.style-buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+}
+
+.style-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    padding: 0.5rem 0.25rem;
+    border: 1.5px solid var(--border-color);
+    background: var(--surface-color);
+    color: var(--text-secondary);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: var(--transition);
+    font-size: 0.7rem;
+    font-weight: 500;
+}
+
+.style-btn:hover {
+    border-color: var(--primary-color);
+    background: rgba(255, 107, 107, 0.1);
+    color: var(--text-primary);
+    transform: translateY(-2px);
+}
+
+.style-btn.active {
+    border-color: var(--primary-color);
+    background: var(--primary-color);
+    color: white;
+    box-shadow: 0 2px 6px rgba(255, 107, 107, 0.3);
+}
+
+.style-icon {
+    font-size: 1.1rem;
+    display: block;
+}
+
+/* Clock Display Containers */
+.clock-display {
+    display: none;
+    width: 100%;
+    max-width: 500px;
+}
+
+.clock-display.active {
+    display: block;
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+/* Digital Clock Styles */
+.digital-clock-display .digital-clock {
+    text-align: center;
+    background: var(--card-color);
+    border-radius: var(--border-radius-large);
+    padding: 2.5rem;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-medium);
+}
+
+/* Analog Clock Styles */
+.analog-clock-display {
+    text-align: center;
+}
+
+.analog-clock-display .analog-clock {
+    margin: 0 auto;
+}
+
+.analog-info {
+    background: var(--card-color);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-light);
+    margin-top: 1.5rem;
+    text-align: center;
+}
+
+.analog-date {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.analog-timezone {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+/* Flip Clock Styles */
+.flip-clock {
+    background: var(--card-color);
+    border-radius: var(--border-radius-large);
+    padding: 2.5rem;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-medium);
+    text-align: center;
+}
+
+.flip-time {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.flip-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.flip-card {
+    position: relative;
+    width: 80px;
+    height: 100px;
+    perspective: 1000px;
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.3s ease-in-out;
+    transform-style: preserve-3d;
+}
+
+.flip-card-front,
+.flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    background: var(--surface-color);
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--primary-color);
+    box-shadow: var(--shadow-medium);
+}
+
+.flip-card-back {
+    transform: rotateX(180deg);
+    background: var(--primary-color);
+    color: white;
+}
+
+.flip-separator {
+    font-size: 3rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    align-self: flex-start;
+    margin-top: 1rem;
+}
+
+.flip-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.flip-info {
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.flip-date {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.flip-timezone {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+/* Minimal Clock Styles */
+.minimal-clock {
+    background: var(--card-color);
+    border-radius: var(--border-radius-large);
+    padding: 2.5rem;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-medium);
+    text-align: center;
+    position: relative;
+}
+
+.minimal-time-container {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.minimal-time {
+    font-size: 4.5rem;
+    font-weight: 300;
+    color: var(--text-primary);
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+    letter-spacing: -0.02em;
+}
+
+.minimal-period {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    align-self: flex-start;
+    margin-top: 0.5rem;
+}
+
+.minimal-divider {
+    width: 60px;
+    height: 2px;
+    background: var(--primary-color);
+    margin: 0 auto 1.5rem;
+    border-radius: 1px;
+}
+
+.minimal-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.minimal-date {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.minimal-timezone {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Responsive Design for Clock Styles */
+@media (max-width: 600px) {
+    .clock-container {
+        gap: 1rem;
+        padding: 0.5rem 0;
+    }
+    
+    .style-buttons {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+    }
+    
+    .style-btn {
+        padding: 0.4rem 0.2rem;
+        font-size: 0.65rem;
+        gap: 0.15rem;
+    }
+    
+    .style-icon {
+        font-size: 0.9rem;
+    }
+    
+    .time-display {
+        font-size: 2.5rem;
+    }
+    
+    .analog-clock {
+        width: 240px;
+        height: 240px;
+    }
+    
+    .flip-time {
+        gap: 0.5rem;
+    }
+    
+    .flip-card {
+        width: 60px;
+        height: 80px;
+    }
+    
+    .flip-card-front,
+    .flip-card-back {
+        font-size: 1.5rem;
+    }
+    
+    .flip-separator {
+        font-size: 2rem;
+    }
+    
+    .minimal-time {
+        font-size: 3rem;
+    }
+    
+    .minimal-period {
+        font-size: 1.2rem;
+    }
+    
+    .digital-clock-display .digital-clock,
+    .flip-clock,
+    .minimal-clock {
+        padding: 1.5rem;
+    }
+    
+    .clock-style-selector {
+        padding: 0.5rem;
+        margin-bottom: 0.75rem;
+        max-width: 280px;
+    }
+    
+    .clock-style-selector h3 {
+        font-size: 0.9rem;
+        margin-bottom: 0.4rem;
     }
 }
 

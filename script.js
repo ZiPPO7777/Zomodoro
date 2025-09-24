@@ -56,6 +56,12 @@ class ZomodoroTimer {
         
         // Initialize the application
         this.init();
+        
+        // Initialize clock functionality
+        this.initializeClock();
+        
+        // Initialize section navigation
+        this.initializeSectionNavigation();
     }
 
     initializeElements() {
@@ -138,6 +144,50 @@ class ZomodoroTimer {
         
         // Theme elements
         this.themeOptions = document.querySelectorAll('.theme-option');
+        
+        // Clock elements
+        this.clockTime = document.getElementById('clockTime');
+        this.clockDate = document.getElementById('clockDate');
+        this.clockTimezone = document.getElementById('clockTimezone');
+        this.hourHand = document.getElementById('hourHand');
+        this.minuteHand = document.getElementById('minuteHand');
+        this.secondHand = document.getElementById('secondHand');
+        this.analogClock = document.getElementById('analogClock');
+        this.formatToggleBtn = document.getElementById('formatToggleBtn');
+        this.analogToggleBtn = document.getElementById('analogToggleBtn');
+        
+        // Clock style elements
+        this.styleButtons = document.querySelectorAll('.style-btn');
+        this.clockDisplays = document.querySelectorAll('.clock-display');
+        
+        // Analog clock info elements
+        this.analogDate = document.getElementById('analogDate');
+        this.analogTimezone = document.getElementById('analogTimezone');
+        
+        // Flip clock elements
+        this.flipHours = document.getElementById('flipHours');
+        this.flipMinutes = document.getElementById('flipMinutes');
+        this.flipSeconds = document.getElementById('flipSeconds');
+        this.flipDate = document.getElementById('flipDate');
+        this.flipTimezone = document.getElementById('flipTimezone');
+        
+        // Minimal clock elements
+        this.minimalTime = document.getElementById('minimalTime');
+        this.minimalPeriod = document.getElementById('minimalPeriod');
+        this.minimalDate = document.getElementById('minimalDate');
+        this.minimalTimezone = document.getElementById('minimalTimezone');
+        
+        // World clock elements
+        this.nyTime = document.getElementById('nyTime');
+        this.londonTime = document.getElementById('londonTime');
+        this.tokyoTime = document.getElementById('tokyoTime');
+        this.sydneyTime = document.getElementById('sydneyTime');
+        
+        // Section navigation
+        this.clockNavBtn = document.getElementById('clockNavBtn');
+        this.pomodoroNavBtn = document.getElementById('pomodoroNavBtn');
+        this.clockSection = document.getElementById('clockSection');
+        this.pomodoroSection = document.getElementById('pomodoroSection');
     }
 
     init() {
@@ -155,6 +205,361 @@ class ZomodoroTimer {
         this.requestNotificationPermission();
         
         console.log('Zomodoro Timer initialized successfully!');
+    }
+    
+    // Clock functionality
+    initializeClock() {
+        // Clock settings
+        this.clockSettings = {
+            is24Hour: false,
+            showAnalog: true,
+            currentStyle: 'digital'
+        };
+        
+        this.clockInterval = null;
+        this.flipAnimationTimeouts = {};
+        
+        // Setup clock event listeners
+        if (this.formatToggleBtn) {
+            this.formatToggleBtn.addEventListener('click', () => this.toggleTimeFormat());
+        }
+        if (this.analogToggleBtn) {
+            this.analogToggleBtn.addEventListener('click', () => this.toggleAnalogClock());
+        }
+        
+        // Setup style selection
+        this.styleButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const style = e.currentTarget.dataset.style;
+                this.switchClockStyle(style);
+            });
+        });
+        
+        // Clock style button and modal
+        const clockStyleBtn = document.getElementById('clockStyleBtn');
+        const clockStyleModal = document.getElementById('clockStyleModal');
+        const closeClockStyleBtn = document.getElementById('closeClockStyleBtn');
+        
+        if (clockStyleBtn && clockStyleModal) {
+            clockStyleBtn.addEventListener('click', () => {
+                clockStyleModal.style.display = 'flex';
+            });
+            
+            // Close modal when clicking outside or close button
+            if (closeClockStyleBtn) {
+                closeClockStyleBtn.addEventListener('click', () => {
+                    clockStyleModal.style.display = 'none';
+                });
+            }
+            
+            clockStyleModal.addEventListener('click', (e) => {
+                if (e.target === clockStyleModal) {
+                    clockStyleModal.style.display = 'none';
+                }
+            });
+            
+            // Handle style selection from modal
+            const styleOptions = clockStyleModal.querySelectorAll('.clock-style-option');
+            styleOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    const style = option.dataset.style;
+                    this.switchClockStyle(style);
+                    clockStyleModal.style.display = 'none';
+                    
+                    // Update button text to show selected style
+                    const buttonText = clockStyleBtn.querySelector('span');
+                    const styleName = option.querySelector('.style-name').textContent;
+                    buttonText.textContent = `Clock Style: ${styleName}`;
+                    
+                    // Update active state in modal
+                    styleOptions.forEach(opt => opt.classList.remove('active'));
+                    option.classList.add('active');
+                });
+            });
+        }
+        
+        // Start the clock
+        this.startClock();
+    }
+    
+    initializeSectionNavigation() {
+        // Current section (default to clock)
+        this.currentSection = 'clock';
+        
+        // Navigation event listeners
+        if (this.clockNavBtn) {
+            this.clockNavBtn.addEventListener('click', () => this.switchSection('clock'));
+        }
+        if (this.pomodoroNavBtn) {
+            this.pomodoroNavBtn.addEventListener('click', () => this.switchSection('pomodoro'));
+        }
+    }
+    
+    switchSection(section) {
+        if (this.currentSection === section) return;
+        
+        this.currentSection = section;
+        
+        // Update navigation buttons
+        document.querySelectorAll('.nav-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.section === section);
+        });
+        
+        // Update sections visibility
+        if (this.clockSection && this.pomodoroSection) {
+            this.clockSection.classList.toggle('active', section === 'clock');
+            this.pomodoroSection.classList.toggle('active', section === 'pomodoro');
+        }
+        
+        // Start/stop clock based on section
+        if (section === 'clock') {
+            this.startClock();
+        } else {
+            this.stopClock();
+        }
+        
+        // Update page title
+        document.title = section === 'clock' ? 'Zomodoro - Clock' : 'Zomodoro - Pomodoro Timer';
+    }
+    
+    startClock() {
+        if (this.clockInterval) return; // Already running
+        
+        this.updateClock();
+        this.clockInterval = setInterval(() => {
+            this.updateClock();
+        }, 1000);
+    }
+    
+    stopClock() {
+        if (this.clockInterval) {
+            clearInterval(this.clockInterval);
+            this.clockInterval = null;
+        }
+    }
+    
+    updateClock() {
+        const now = new Date();
+        
+        // Update digital clock
+        const timeString = this.formatTime(now);
+        const dateString = this.formatDate(now);
+        const timezoneString = this.getTimezoneString();
+        
+        // Update based on current style
+        switch(this.clockSettings.currentStyle) {
+            case 'digital':
+                if (this.clockTime) this.clockTime.textContent = timeString;
+                if (this.clockDate) this.clockDate.textContent = dateString;
+                if (this.clockTimezone) this.clockTimezone.textContent = timezoneString;
+                break;
+                
+            case 'analog':
+                this.updateAnalogClock(now);
+                if (this.analogDate) this.analogDate.textContent = dateString;
+                if (this.analogTimezone) this.analogTimezone.textContent = timezoneString;
+                break;
+                
+            case 'flip':
+                this.updateFlipClock(now);
+                if (this.flipDate) this.flipDate.textContent = dateString;
+                if (this.flipTimezone) this.flipTimezone.textContent = timezoneString;
+                break;
+                
+            case 'minimal':
+                this.updateMinimalClock(now);
+                if (this.minimalDate) this.minimalDate.textContent = dateString;
+                if (this.minimalTimezone) this.minimalTimezone.textContent = timezoneString;
+                break;
+        }
+        
+        // Update world clocks
+        this.updateWorldClocks();
+    }
+    
+    switchClockStyle(style) {
+        this.clockSettings.currentStyle = style;
+        
+        // Update style buttons
+        this.styleButtons.forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.style === style);
+        });
+        
+        // Update clock displays
+        this.clockDisplays.forEach(display => {
+            display.classList.remove('active');
+        });
+        
+        const activeDisplay = document.getElementById(`${style}ClockDisplay`);
+        if (activeDisplay) {
+            activeDisplay.classList.add('active');
+        }
+        
+        // Update the current time immediately
+        this.updateClock();
+    }
+    
+    updateFlipClock(date) {
+        const hours = this.clockSettings.is24Hour ? 
+            date.getHours().toString().padStart(2, '0') :
+            (date.getHours() % 12 || 12).toString().padStart(2, '0');
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        const seconds = date.getSeconds().toString().padStart(2, '0');
+        
+        this.animateFlipCard('flipHours', hours);
+        this.animateFlipCard('flipMinutes', minutes);
+        this.animateFlipCard('flipSeconds', seconds);
+    }
+    
+    animateFlipCard(elementId, newValue) {
+        const element = document.getElementById(elementId);
+        if (!element) return;
+        
+        const front = element.querySelector('.flip-card-front');
+        const back = element.querySelector('.flip-card-back');
+        const inner = element.querySelector('.flip-card-inner');
+        
+        if (front.textContent !== newValue) {
+            // Set the back to the new value
+            back.textContent = newValue;
+            
+            // Add flip animation
+            inner.style.transform = 'rotateX(180deg)';
+            
+            // Clear any existing timeout
+            if (this.flipAnimationTimeouts[elementId]) {
+                clearTimeout(this.flipAnimationTimeouts[elementId]);
+            }
+            
+            // After animation completes, update front and reset
+            this.flipAnimationTimeouts[elementId] = setTimeout(() => {
+                front.textContent = newValue;
+                inner.style.transform = 'rotateX(0deg)';
+            }, 300);
+        }
+    }
+    
+    updateMinimalClock(date) {
+        const is24Hour = this.clockSettings.is24Hour;
+        
+        if (is24Hour) {
+            const timeString = date.toLocaleTimeString('en-US', {
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            if (this.minimalTime) this.minimalTime.textContent = timeString;
+            if (this.minimalPeriod) this.minimalPeriod.style.display = 'none';
+        } else {
+            const timeString = date.toLocaleTimeString('en-US', {
+                hour12: false,
+                hour: 'numeric',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            const period = date.getHours() >= 12 ? 'PM' : 'AM';
+            
+            if (this.minimalTime) this.minimalTime.textContent = timeString;
+            if (this.minimalPeriod) {
+                this.minimalPeriod.textContent = period;
+                this.minimalPeriod.style.display = 'block';
+            }
+        }
+    }
+    
+    formatTime(date) {
+        if (this.clockSettings.is24Hour) {
+            return date.toLocaleTimeString('en-US', {
+                hour12: false,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+        } else {
+            return date.toLocaleTimeString('en-US', {
+                hour12: true,
+                hour: 'numeric',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+        }
+    }
+    
+    formatDate(date) {
+        return date.toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    }
+    
+    getTimezoneString() {
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        return `${timezone} Time`;
+    }
+    
+    updateAnalogClock(date) {
+        if (!this.hourHand || !this.minuteHand || !this.secondHand) return;
+        
+        const hours = date.getHours() % 12;
+        const minutes = date.getMinutes();
+        const seconds = date.getSeconds();
+        
+        // Calculate angles (0 degrees = 12 o'clock)
+        const secondAngle = (seconds * 6); // 6 degrees per second
+        const minuteAngle = (minutes * 6) + (seconds * 0.1); // 6 degrees per minute + smooth transition
+        const hourAngle = (hours * 30) + (minutes * 0.5); // 30 degrees per hour + smooth transition
+        
+        // Apply rotations
+        this.secondHand.style.transform = `rotate(${secondAngle}deg)`;
+        this.minuteHand.style.transform = `rotate(${minuteAngle}deg)`;
+        this.hourHand.style.transform = `rotate(${hourAngle}deg)`;
+    }
+    
+    updateWorldClocks() {
+        const now = new Date();
+        
+        // World time zones
+        const timeZones = {
+            'nyTime': 'America/New_York',
+            'londonTime': 'Europe/London',
+            'tokyoTime': 'Asia/Tokyo',
+            'sydneyTime': 'Australia/Sydney'
+        };
+        
+        Object.entries(timeZones).forEach(([elementId, timezone]) => {
+            const element = this[elementId];
+            if (element) {
+                try {
+                    const timeString = now.toLocaleTimeString('en-US', {
+                        timeZone: timezone,
+                        hour12: !this.clockSettings.is24Hour,
+                        hour: this.clockSettings.is24Hour ? '2-digit' : 'numeric',
+                        minute: '2-digit'
+                    });
+                    element.textContent = timeString;
+                } catch (error) {
+                    element.textContent = '--:--';
+                }
+            }
+        });
+    }
+    
+    toggleTimeFormat() {
+        this.clockSettings.is24Hour = !this.clockSettings.is24Hour;
+        this.formatToggleBtn.textContent = this.clockSettings.is24Hour ? '24 Hour' : '12 Hour';
+        this.updateClock();
+    }
+    
+    toggleAnalogClock() {
+        this.clockSettings.showAnalog = !this.clockSettings.showAnalog;
+        this.analogToggleBtn.textContent = this.clockSettings.showAnalog ? 'Hide Analog' : 'Show Analog';
+        
+        if (this.analogClock) {
+            this.analogClock.style.display = this.clockSettings.showAnalog ? 'block' : 'none';
+        }
     }
 
     setupEventListeners() {

@@ -85,6 +85,195 @@
 
       <!-- Main Content -->
       <main class="main">
+        <!-- Section Navigation -->
+        <nav class="section-nav">
+          <button class="nav-btn active" id="clockNavBtn" data-section="clock">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 6v6l4 2" stroke="white" stroke-width="2" stroke-linecap="round" fill="none"/>
+            </svg>
+            <span>Clock</span>
+          </button>
+          <button class="nav-btn" id="pomodoroNavBtn" data-section="pomodoro">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+            </svg>
+            <span>Pomodoro</span>
+          </button>
+        </nav>
+
+        <!-- Clock Section -->
+        <section class="clock-section active" id="clockSection">
+          <div class="clock-container">
+            <!-- Clock Style Button -->
+            <button class="clock-style-btn" id="clockStyleBtn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              </svg>
+              <span>Clock Style</span>
+            </button>
+
+            <!-- Digital Clock (Default) -->
+            <div class="clock-display digital-clock-display active" id="digitalClockDisplay">
+              <div class="digital-clock">
+                <div class="time-display" id="clockTime">12:00:00</div>
+                <div class="date-display" id="clockDate">Monday, January 1, 2024</div>
+                <div class="timezone-display" id="clockTimezone">Local Time</div>
+              </div>
+            </div>
+            
+            <!-- Analog Clock -->
+            <div class="clock-display analog-clock-display" id="analogClockDisplay">
+              <div class="analog-clock" id="analogClock">
+                <div class="clock-face">
+                  <div class="hour-markers">
+                    <div class="marker" style="transform: rotate(0deg)"><span>12</span></div>
+                    <div class="marker" style="transform: rotate(30deg)"><span>1</span></div>
+                    <div class="marker" style="transform: rotate(60deg)"><span>2</span></div>
+                    <div class="marker" style="transform: rotate(90deg)"><span>3</span></div>
+                    <div class="marker" style="transform: rotate(120deg)"><span>4</span></div>
+                    <div class="marker" style="transform: rotate(150deg)"><span>5</span></div>
+                    <div class="marker" style="transform: rotate(180deg)"><span>6</span></div>
+                    <div class="marker" style="transform: rotate(210deg)"><span>7</span></div>
+                    <div class="marker" style="transform: rotate(240deg)"><span>8</span></div>
+                    <div class="marker" style="transform: rotate(270deg)"><span>9</span></div>
+                    <div class="marker" style="transform: rotate(300deg)"><span>10</span></div>
+                    <div class="marker" style="transform: rotate(330deg)"><span>11</span></div>
+                  </div>
+                  <div class="clock-hands">
+                    <div class="hand hour-hand" id="hourHand"></div>
+                    <div class="hand minute-hand" id="minuteHand"></div>
+                    <div class="hand second-hand" id="secondHand"></div>
+                    <div class="center-dot"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="analog-info">
+                <div class="analog-date" id="analogDate">Monday, January 1, 2024</div>
+                <div class="analog-timezone" id="analogTimezone">Local Time</div>
+              </div>
+            </div>
+
+            <!-- Flip Clock -->
+            <div class="clock-display flip-clock-display" id="flipClockDisplay">
+              <div class="flip-clock">
+                <div class="flip-time">
+                  <div class="flip-unit hours">
+                    <div class="flip-card" id="flipHours">
+                      <div class="flip-card-inner">
+                        <div class="flip-card-front">12</div>
+                        <div class="flip-card-back">12</div>
+                      </div>
+                    </div>
+                    <div class="flip-label">Hours</div>
+                  </div>
+                  <div class="flip-separator">:</div>
+                  <div class="flip-unit minutes">
+                    <div class="flip-card" id="flipMinutes">
+                      <div class="flip-card-inner">
+                        <div class="flip-card-front">00</div>
+                        <div class="flip-card-back">00</div>
+                      </div>
+                    </div>
+                    <div class="flip-label">Minutes</div>
+                  </div>
+                  <div class="flip-separator">:</div>
+                  <div class="flip-unit seconds">
+                    <div class="flip-card" id="flipSeconds">
+                      <div class="flip-card-inner">
+                        <div class="flip-card-front">00</div>
+                        <div class="flip-card-back">00</div>
+                      </div>
+                    </div>
+                    <div class="flip-label">Seconds</div>
+                  </div>
+                </div>
+                <div class="flip-info">
+                  <div class="flip-date" id="flipDate">Monday, January 1, 2024</div>
+                  <div class="flip-timezone" id="flipTimezone">Local Time</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Minimal Clock -->
+            <div class="clock-display minimal-clock-display" id="minimalClockDisplay">
+              <div class="minimal-clock">
+                <div class="minimal-time-container">
+                  <div class="minimal-time" id="minimalTime">12:00:00</div>
+                  <div class="minimal-period" id="minimalPeriod">AM</div>
+                </div>
+                <div class="minimal-divider"></div>
+                <div class="minimal-info">
+                  <div class="minimal-date" id="minimalDate">Monday, January 1, 2024</div>
+                  <div class="minimal-timezone" id="minimalTimezone">Local Time</div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="clock-controls">
+              <button class="clock-format-btn" id="formatToggleBtn">12 Hour</button>
+              <button class="clock-format-btn" id="analogToggleBtn" style="display: none;">Hide Analog</button>
+            </div>
+            
+            <!-- Clock Style Modal -->
+            <div class="clock-style-modal" id="clockStyleModal">
+              <div class="clock-style-modal-content">
+                <div class="clock-style-header">
+                  <h3>Choose Clock Style</h3>
+                  <button class="close-btn" id="closeClockStyleBtn">&times;</button>
+                </div>
+                <div class="clock-style-grid">
+                  <button class="clock-style-option active" data-style="digital">
+                    <span class="style-icon">🔢</span>
+                    <span class="style-name">Digital</span>
+                    <span class="style-desc">Modern digital display</span>
+                  </button>
+                  <button class="clock-style-option" data-style="analog">
+                    <span class="style-icon">🕐</span>
+                    <span class="style-name">Analog</span>
+                    <span class="style-desc">Classic clock face</span>
+                  </button>
+                  <button class="clock-style-option" data-style="flip">
+                    <span class="style-icon">📟</span>
+                    <span class="style-name">Flip</span>
+                    <span class="style-desc">Retro flip cards</span>
+                  </button>
+                  <button class="clock-style-option" data-style="minimal">
+                    <span class="style-icon">⭕</span>
+                    <span class="style-name">Minimal</span>
+                    <span class="style-desc">Clean and simple</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            
+            <!-- World Clocks -->
+            <div class="world-clocks">
+              <h3>World Time</h3>
+              <div class="world-clock-grid">
+                <div class="world-clock-item">
+                  <div class="city-name">New York</div>
+                  <div class="city-time" id="nyTime">--:--</div>
+                </div>
+                <div class="world-clock-item">
+                  <div class="city-name">London</div>
+                  <div class="city-time" id="londonTime">--:--</div>
+                </div>
+                <div class="world-clock-item">
+                  <div class="city-name">Tokyo</div>
+                  <div class="city-time" id="tokyoTime">--:--</div>
+                </div>
+                <div class="world-clock-item">
+                  <div class="city-name">Sydney</div>
+                  <div class="city-time" id="sydneyTime">--:--</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Pomodoro Section -->
+        <section class="pomodoro-section" id="pomodoroSection">
         <!-- Timer Section -->
         <section class="timer-section">
           <div class="timer-container">
