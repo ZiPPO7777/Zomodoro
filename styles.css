@@ -3,6 +3,16 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+}
+
+/* Prevent zoom on mobile devices */
+html {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    touch-action: manipulation;
 }
 
 :root {
@@ -232,6 +242,11 @@ body {
     transition: var(--transition);
     overflow-x: hidden;
     min-height: 100vh;
+    -webkit-text-size-adjust: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .app {
@@ -1412,6 +1427,7 @@ body {
     }
 }
 
+/* Small mobile devices */
 @media (max-width: 480px) {
     .header-content {
         height: 56px;
@@ -5512,8 +5528,83 @@ body {
     
     .control-btn {
         height: 40px;
-        font-size: 0.8rem;
-        max-width: 70px;
+    }
+
+/* Enhanced Mobile Responsive Breakpoints */
+
+/* Large mobile devices (landscape phones, small tablets) */
+@media (max-width: 896px) and (orientation: landscape) {
+    .main {
+        padding: 16px;
+    }
+    
+    .timer-container {
+        max-width: 300px;
+        padding: 20px 16px;
+    }
+    
+    .timer-circle {
+        width: 180px;
+        height: 180px;
+    }
+    
+    .timer-display {
+        font-size: 2.2rem;
+    }
+    
+    .tasks-section {
+        margin-top: 16px;
+    }
+}
+
+/* Standard mobile devices */
+@media (max-width: 768px) {
+    .main {
+        padding: 16px;
+        min-height: calc(100vh - 64px);
+    }
+    
+    .timer-section {
+        min-height: 400px;
+        padding: 16px 0;
+    }
+    
+    .timer-container {
+        padding: 24px 16px;
+        max-width: 320px;
+    }
+    
+    .timer-circle {
+        width: 200px;
+        height: 200px;
+        margin-bottom: 24px;
+    }
+    
+    .progress-ring circle {
+        r: 90;
+    }
+    
+    .progress-ring-progress {
+        stroke-dasharray: 565;
+        stroke-dashoffset: 565;
+    }
+    
+    .timer-display {
+        font-size: 2.2rem;
+    }
+    
+    .timer-label {
+        font-size: 0.85rem;
+    }
+    
+    .session-info {
+        font-size: 0.75rem;
+    }
+    
+    .control-btn {
+        height: 44px;
+        font-size: 0.85rem;
+        max-width: 80px;
     }
     
     .timer-controls {
@@ -5673,5 +5764,368 @@ body {
     
     .master-volume span {
         font-size: 0.8rem;
+    }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 375px) {
+    .header-content {
+        height: 52px;
+        padding: 0 12px;
+    }
+    
+    .logo {
+        font-size: 1.2rem;
+    }
+    
+    .logo-icon {
+        font-size: 1.4rem;
+    }
+    
+    .icon-btn {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .main {
+        padding: 10px;
+        min-height: calc(100vh - 52px);
+    }
+    
+    .timer-section {
+        min-height: 320px;
+        padding: 10px 0;
+    }
+    
+    .timer-container {
+        padding: 16px 10px;
+        max-width: 280px;
+    }
+    
+    .timer-circle {
+        width: 160px;
+        height: 160px;
+        margin-bottom: 16px;
+    }
+    
+    .progress-ring circle {
+        r: 70;
+    }
+    
+    .progress-ring-progress {
+        stroke-dasharray: 440;
+        stroke-dashoffset: 440;
+        stroke-width: 4;
+    }
+    
+    .progress-ring-background {
+        stroke-width: 4;
+    }
+    
+    .timer-display {
+        font-size: 1.7rem;
+    }
+    
+    .timer-label {
+        font-size: 0.75rem;
+        margin-bottom: 4px;
+    }
+    
+    .session-info {
+        font-size: 0.65rem;
+    }
+    
+    .control-btn {
+        height: 36px;
+        font-size: 0.75rem;
+        max-width: 60px;
+    }
+    
+    .timer-controls {
+        gap: 6px;
+        margin-bottom: 14px;
+    }
+    
+    .mode-btn {
+        padding: 6px 3px;
+        font-size: 0.65rem;
+    }
+    
+    .tasks-section {
+        padding: 14px 10px;
+        margin-top: 10px;
+    }
+    
+    .tasks-header h2 {
+        font-size: 1rem;
+    }
+    
+    .add-task-btn {
+        padding: 6px 10px;
+        font-size: 0.75rem;
+    }
+    
+    .clear-all-btn {
+        padding: 5px 8px;
+        font-size: 0.7rem;
+    }
+    
+    .task-item {
+        padding: 8px;
+        gap: 6px;
+    }
+    
+    .task-name {
+        font-size: 0.8rem;
+    }
+    
+    .task-progress {
+        font-size: 0.65rem;
+    }
+    
+    .modal-content {
+        margin: 10px;
+        max-width: calc(100% - 20px);
+    }
+    
+    .theme-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+    
+    .theme-preview {
+        width: 40px;
+        height: 25px;
+    }
+    
+    .theme-name {
+        font-size: 0.6rem;
+    }
+}
+
+/* Ultra small devices (Galaxy Fold, iPhone SE) */
+@media (max-width: 320px) {
+    .header-content {
+        height: 48px;
+        padding: 0 10px;
+    }
+    
+    .logo {
+        font-size: 1.1rem;
+    }
+    
+    .logo-icon {
+        font-size: 1.3rem;
+    }
+    
+    .icon-btn {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .main {
+        padding: 8px;
+        min-height: calc(100vh - 48px);
+    }
+    
+    .timer-section {
+        min-height: 300px;
+        padding: 8px 0;
+    }
+    
+    .timer-container {
+        padding: 14px 8px;
+        max-width: 260px;
+    }
+    
+    .timer-circle {
+        width: 140px;
+        height: 140px;
+        margin-bottom: 14px;
+    }
+    
+    .progress-ring circle {
+        r: 60;
+    }
+    
+    .progress-ring-progress {
+        stroke-dasharray: 377;
+        stroke-dashoffset: 377;
+        stroke-width: 3;
+    }
+    
+    .progress-ring-background {
+        stroke-width: 3;
+    }
+    
+    .timer-display {
+        font-size: 1.5rem;
+    }
+    
+    .timer-label {
+        font-size: 0.7rem;
+        margin-bottom: 3px;
+    }
+    
+    .session-info {
+        font-size: 0.6rem;
+    }
+    
+    .control-btn {
+        height: 32px;
+        font-size: 0.7rem;
+        max-width: 50px;
+    }
+    
+    .timer-controls {
+        gap: 4px;
+        margin-bottom: 12px;
+    }
+    
+    .mode-btn {
+        padding: 5px 2px;
+        font-size: 0.6rem;
+    }
+    
+    .tasks-section {
+        padding: 12px 8px;
+        margin-top: 8px;
+    }
+    
+    .tasks-header h2 {
+        font-size: 0.9rem;
+    }
+    
+    .add-task-btn {
+        padding: 5px 8px;
+        font-size: 0.7rem;
+    }
+    
+    .clear-all-btn {
+        padding: 4px 6px;
+        font-size: 0.65rem;
+    }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .progress-ring {
+        filter: drop-shadow(0 2px 4px rgba(255, 107, 107, 0.15));
+    }
+    
+    .icon-btn {
+        border: 0.5px solid transparent;
+    }
+}
+
+/* Touch device optimizations */
+@media (pointer: coarse) {
+    .icon-btn {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    .control-btn {
+        min-height: 44px;
+        padding: 12px 16px;
+    }
+    
+    .mode-btn {
+        min-height: 44px;
+        padding: 12px 8px;
+    }
+    
+    .task-checkbox {
+        min-width: 24px;
+        min-height: 24px;
+    }
+    
+    .task-action-btn {
+        min-width: 44px;
+        min-height: 44px;
+    }
+}
+
+/* Additional Mobile Optimizations */
+
+/* Disable text size adjustment on mobile */
+html {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+/* Enhanced touch interaction */
+* {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Allow text selection for inputs and content areas */
+input, textarea, .task-name, .timer-display, .clock-display {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+}
+
+/* Prevent zooming on input focus */
+input, select, textarea {
+    font-size: 16px;
+}
+
+@media (max-width: 480px) {
+    input, select, textarea {
+        font-size: 16px;
+    }
+}
+
+/* Enhanced landscape mode for mobile */
+@media (max-width: 896px) and (orientation: landscape) {
+    .timer-section {
+        min-height: 280px;
+        padding: 12px 0;
+    }
+    
+    .timer-container {
+        max-width: 280px;
+        padding: 16px 12px;
+    }
+    
+    .timer-circle {
+        width: 160px;
+        height: 160px;
+        margin-bottom: 16px;
+    }
+    
+    .progress-ring circle {
+        r: 70;
+    }
+    
+    .progress-ring-progress {
+        stroke-dasharray: 440;
+        stroke-dashoffset: 440;
+    }
+    
+    .timer-display {
+        font-size: 1.8rem;
+    }
+    
+    .tasks-section {
+        margin-top: 12px;
+        padding: 16px 12px;
+    }
+    
+    .header-content {
+        height: 56px;
+    }
+    
+    .main {
+        min-height: calc(100vh - 56px);
+        padding: 12px;
     }
 }

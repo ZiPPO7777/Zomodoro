@@ -2301,7 +2301,174 @@ class FocusSoundEngine {
 let timer;
 document.addEventListener('DOMContentLoaded', () => {
     timer = new ZomodoroTimer();
+    
+    // Mobile optimizations
+    initializeMobileOptimizations();
 });
 
 // Make timer globally available for onclick handlers
 window.timer = timer;
+
+// Mobile optimization functions
+function initializeMobileOptimizations() {
+    // Prevent zoom on double tap
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', function (event) {
+        let now = (new Date()).getTime();
+        if (now - lastTouchEnd <= 300) {
+            event.preventDefault();
+        }
+        lastTouchEnd = now;
+    }, false);
+    
+    // Prevent zoom on pinch gesture
+    document.addEventListener('gesturestart', function (e) {
+        e.preventDefault();
+    });
+    
+    document.addEventListener('gesturechange', function (e) {
+        e.preventDefault();
+    });
+    
+    document.addEventListener('gestureend', function (e) {
+        e.preventDefault();
+    });
+    
+    // Add touch feedback for buttons
+    const buttons = document.querySelectorAll('button, .btn, .control-btn, .mode-btn, .icon-btn');
+    buttons.forEach(button => {
+        button.addEventListener('touchstart', function() {
+            this.style.transform = 'scale(0.95)';
+        }, { passive: true });
+        
+        button.addEventListener('touchend', function() {
+            setTimeout(() => {
+                this.style.transform = '';
+            }, 100);
+        }, { passive: true });
+    });
+    
+    // Optimize input behavior for mobile
+    const inputs = document.querySelectorAll('input, textarea');
+    inputs.forEach(input => {
+        // Prevent zoom on focus
+        input.addEventListener('focus', function() {
+            if (this.type !== 'number') {
+                this.style.fontSize = '16px';
+            }
+        });
+        
+        // Add better touch targets
+        input.style.minHeight = '44px';
+    });
+    
+    // Handle orientation change
+    window.addEventListener('orientationchange', function() {
+        setTimeout(function() {
+            // Force a reflow to handle any layout issues
+            window.scrollTo(0, 0);
+            
+            // Update viewport height for landscape mode
+            const vh = window.innerHeight * 0.01;
+            document.documentElement.style.setProperty('--vh', `${vh}px`);
+        }, 100);
+    });
+    
+    // Set initial viewport height
+    const vh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--vh', `${vh}px`);
+    
+    // Handle window resize for mobile browsers
+    window.addEventListener('resize', function() {
+        const vh = window.innerHeight * 0.01;
+        document.documentElement.style.setProperty('--vh', `${vh}px`);
+    });
+    
+    // Disable context menu on long press for mobile
+    document.addEventListener('contextmenu', function(e) {
+        if (window.innerWidth <= 768) {
+            e.preventDefault();
+        }
+    });
+    
+    // Add visual feedback for task interactions
+    const taskList = document.getElementById('tasksList');
+    if (taskList) {
+        taskList.addEventListener('touchstart', function(e) {
+            const taskItem = e.target.closest('.task-item');
+            if (taskItem) {
+                taskItem.style.backgroundColor = 'rgba(255, 107, 107, 0.1)';
+            }
+        }, { passive: true });
+        
+        taskList.addEventListener('touchend', function(e) {
+            const taskItem = e.target.closest('.task-item');
+            if (taskItem) {
+                setTimeout(() => {
+                    taskItem.style.backgroundColor = '';
+                }, 150);
+            }
+        }, { passive: true });
+    }
+    
+    // Improve timer display visibility on small screens
+    adjustTimerForSmallScreens();
+}
+
+function adjustTimerForSmallScreens() {
+    function updateTimerSize() {
+        const timerDisplay = document.getElementById('timerDisplay');
+        const timerContainer = document.querySelector('.timer-container');
+        
+        if (timerDisplay && timerContainer) {
+            const containerWidth = timerContainer.offsetWidth;
+            
+            if (containerWidth < 300) {
+                timerDisplay.style.fontSize = '1.5rem';
+            } else if (containerWidth < 350) {
+                timerDisplay.style.fontSize = '1.8rem';
+            }
+        }
+    }
+    
+    // Initial adjustment
+    updateTimerSize();
+    
+    // Re-adjust on window resize
+    window.addEventListener('resize', updateTimerSize);
+}
+
+// Add CSS custom properties for dynamic viewport height
+const style = document.createElement('style');
+style.textContent = `
+    :root {
+        --vh: 1vh;
+    }
+    
+    .app {
+        min-height: calc(var(--vh, 1vh) * 100);
+    }
+    
+    .main {
+        min-height: calc(var(--vh, 1vh) * 100 - 64px);
+    }
+    
+    @media (max-width: 480px) {
+        .main {
+            min-height: calc(var(--vh, 1vh) * 100 - 56px);
+        }
+    }
+    
+    @media (max-width: 375px) {
+        .main {
+            min-height: calc(var(--vh, 1vh) * 100 - 52px);
+        }
+    }
+    
+    @media (max-width: 320px) {
+        .main {
+            min-height: calc(var(--vh, 1vh) * 100 - 48px);
+        }
+    }
+`;
+document.head.appendChild(style);

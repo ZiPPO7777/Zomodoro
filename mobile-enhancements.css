@@ -1,0 +1,132 @@
+/* Mobile Enhancements for Zomodoro */
+
+/* Prevent zoom and improve touch handling */
+html {
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    touch-action: manipulation;
+}
+
+* {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+}
+
+/* Allow text selection for content areas */
+input, textarea, .task-name, .timer-display, [data-text-selectable] {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+    -webkit-touch-callout: default;
+}
+
+/* Prevent zoom on input focus */
+input, select, textarea {
+    font-size: 16px !important;
+}
+
+/* Enhanced touch targets for mobile */
+@media (pointer: coarse) {
+    .icon-btn, .control-btn, .mode-btn {
+        min-height: 44px;
+        min-width: 44px;
+    }
+    
+    .task-checkbox, .task-action-btn {
+        min-height: 44px;
+        min-width: 44px;
+    }
+}
+
+/* Additional responsive breakpoints */
+
+/* Large phones in landscape */
+@media (max-width: 896px) and (orientation: landscape) {
+    .main {
+        padding: 12px;
+    }
+    
+    .timer-section {
+        min-height: 280px;
+        padding: 12px 0;
+    }
+    
+    .timer-container {
+        max-width: 280px;
+        padding: 16px 12px;
+    }
+    
+    .timer-circle {
+        width: 160px;
+        height: 160px;
+    }
+    
+    .timer-display {
+        font-size: 1.8rem;
+    }
+}
+
+/* Small screens (iPhone SE, older Androids) */
+@media (max-width: 375px) {
+    .header-content {
+        height: 52px;
+        padding: 0 12px;
+    }
+    
+    .logo {
+        font-size: 1.2rem;
+    }
+    
+    .icon-btn {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .timer-circle {
+        width: 160px;
+        height: 160px;
+    }
+    
+    .timer-display {
+        font-size: 1.7rem;
+    }
+    
+    .control-btn {
+        max-width: 60px;
+        font-size: 0.75rem;
+    }
+}
+
+/* Very small screens (Galaxy Fold, etc.) */
+@media (max-width: 320px) {
+    .header-content {
+        height: 48px;
+        padding: 0 8px;
+    }
+    
+    .logo {
+        font-size: 1.1rem;
+    }
+    
+    .icon-btn {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .timer-circle {
+        width: 140px;
+        height: 140px;
+    }
+    
+    .timer-display {
+        font-size: 1.5rem;
+    }
+    
+    .control-btn {
+        max-width: 50px;
+        height: 32px;
+        font-size: 0.7rem;
+    }
+}
